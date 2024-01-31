@@ -26,6 +26,11 @@ Format code trước khi push, theo .prettierrc, .eslintrc.js, .eslintrc.json.
 Import package sử dụng path prefix @/, thay vì ./ hoặc ../ 
 
 ## Cấu trúc thư mục
-__tests__ : test UI
-@types : defined ra các global type trong PJ
-app : app router (next14) [XEM Ở ĐÂY](https://nextjs.org/docs)
+1. __tests__ : test UI
+2. @types : defined ra các global type trong PJ
+3. app : app router (next14) [XEM Ở ĐÂY](https://nextjs.org/docs)
+4. common : chứa các config thư viện, constants, custom hook, API service (thao tác với API, trong PJ có sử dụng reactQuery), utils chứa các function helpers
+5. components : chứa common component
+6. features : ví dụ về việc dùng react query để call API
+7. layouts : chứa các components trong layout như header, footer, sidebar,...
+8. support đa ngôn ngữ
