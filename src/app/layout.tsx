@@ -1,11 +1,18 @@
 import Providers from "@/common/utils/Providers";
-import Footer from "@/layouts/components/Footer";
-import { Header } from "@/layouts/components/Header";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import { PropsWithChildren } from "react";
+import "@/common/styles/reset.css";
+import { Header } from "@/layouts/components/Header";
+import Footer from "@/layouts/components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  weight: ["400", "700", "900", "500", "100", "300"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
+});
 
 export const metadata: Metadata = {
   title: "Đặt phòng khách sạn",
@@ -17,7 +24,7 @@ interface IRootLayoutpProps extends PropsWithChildren {}
 
 export default function RootLayout({ children }: IRootLayoutpProps) {
   return (
-    <html lang="en">
+    <html lang="en" className={roboto.className}>
       <body>
         <Providers>
           <Header />
