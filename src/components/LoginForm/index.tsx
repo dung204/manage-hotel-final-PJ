@@ -1,8 +1,10 @@
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import Button from "../Button";
+import useGetUser from "@/features/user/useGetUser";
+import userApi from "@/features/user/user.service";
 
 export interface ILoginForm {
   username: string;
@@ -29,7 +31,6 @@ const LoginForm = () => {
       initialValues={initLoginFormValue}
       validationSchema={LoginFormSchema}
       onSubmit={(value: ILoginForm) => {
-        console.log(value);
         toast.success("Đăng nhập thành công");
       }}
     >

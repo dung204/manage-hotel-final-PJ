@@ -2,7 +2,7 @@
 import React from "react";
 import { HeaderStyle } from "./Header.style";
 import Image from "next/image";
-import ContentWrapper from "@/components/BarChart/ContentWrapper";
+import ContentWrapper from "@/components/ContentWrapper";
 
 export const Header = () => {
   return (

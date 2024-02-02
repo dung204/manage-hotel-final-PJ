@@ -1,8 +1,9 @@
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikHelpers } from "formik";
 import React from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import Button from "../Button";
+import userApi from "@/features/user/user.service";
 
 export interface IRegisterForm {
   email: string;
@@ -14,10 +15,21 @@ export interface IRegisterForm {
 const RegisterFormSchema = Yup.object().shape<
   Record<keyof IRegisterForm, Yup.AnySchema>
 >({
-  username: Yup.string().required("Vui lòng nhập tên đăng nhập!"),
-  password: Yup.string().required("Vui lòng nhập mật khẩu!"),
-  confirmPassword: Yup.string().required("Vui lòng nhập lại mật khẩu!"),
-  email: Yup.string().email("Email không hợp lệ!"),
+  username: Yup.string()
+    .required("Vui lòng nhập tên đăng nhập!")
+    .min(6, "Tên người dùng từ 6 đến 20 kí tự!")
+    .max(20, "Tên người dùng từ 6 đến 20 kí tự!"),
+  password: Yup.string()
+    .required("Vui lòng nhập mật khẩu!")
+    .min(6, "Mật khẩu từ 6 đến 20 kí tự!")
+    .max(20, "Mật khẩu từ 6 đến 20 kí tự!"),
+  confirmPassword: Yup.string()
+    .required("Vui lòng nhập lại mật khẩu!")
+    .min(6, "Mật khẩu từ 6 đến 20 kí tự!")
+    .max(20, "Mật khẩu từ 6 đến 20 kí tự!"),
+  email: Yup.string()
+    .email("Email không hợp lệ!")
+    .required("Vui lòng nhập email!"),
 });
 
 const initRegisterFormValue: IRegisterForm = {
@@ -30,32 +42,55 @@ const initRegisterFormValue: IRegisterForm = {
 const RegisterForm = () => {
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
+  const handleRegister = async (
+    value: IRegisterForm,
+    formikHelpers: FormikHelpers<IRegisterForm>,
+  ) => {
+    if (value.password !== value.confirmPassword) {
+      return toast.error("Mật khẩu không trùng khớp!");
+    }
+    try {
+      const response = await userApi.createUser({
+        email: value.email,
+        username: value.username,
+        password: value.password,
+      });
+
+      if (response.data.isSuccess) {
+        toast.success(response.data.message);
+        formikHelpers.resetForm();
+      } else toast.error(response.data.message);
+    } catch (error) {
+      toast.error("Có lỗi xảy ra! Vui lòng thử lại!");
+    }
+  };
+
   return (
     <Formik
       initialValues={initRegisterFormValue}
       validationSchema={RegisterFormSchema}
-      onSubmit={(value: IRegisterForm) => {
-        console.log(value);
-        toast.success("Đăng ký thành công");
-      }}
+      onSubmit={handleRegister}
     >
       {({ errors, touched }) => {
         return (
           <Form className="loginForm__content">
             <div className="formGroup">
               <div className="formGroup__wrapper">
-                <label htmlFor="Email">Email</label>
+                <label htmlFor="email">Email</label>
                 <Field
                   type="text"
-                  name="Email"
-                  id="Email"
-                  placeholder="Email"
+                  name="email"
+                  id="email"
+                  placeholder="email"
                 />
               </div>
+              {errors.email && touched.email ? (
+                <p className="logError">{errors.email}</p>
+              ) : null}
             </div>
             <div className="formGroup">
               <div className="formGroup__wrapper">
-                <label htmlFor="username">Tên đăn nhập</label>
+                <label htmlFor="username">Tên đăng nhập</label>
                 <Field
                   type="text"
                   name="username"
@@ -63,6 +98,9 @@ const RegisterForm = () => {
                   placeholder="username"
                 />
               </div>
+              {errors.username && touched.username ? (
+                <p className="logError">{errors.username}</p>
+              ) : null}
             </div>
             <div className="formGroup">
               <div className="formGroup__wrapper">
@@ -74,6 +112,9 @@ const RegisterForm = () => {
                   placeholder="Mật khẩu"
                 />
               </div>
+              {errors.password && touched.password ? (
+                <p className="logError">{errors.password}</p>
+              ) : null}
             </div>
             <div className="formGroup">
               <div className="formGroup__wrapper">
@@ -85,6 +126,9 @@ const RegisterForm = () => {
                   placeholder="Xác nhận mật khẩu"
                 />
               </div>
+              {errors.confirmPassword && touched.confirmPassword ? (
+                <p className="logError">{errors.confirmPassword}</p>
+              ) : null}
             </div>
             <div className="showPasswordBox">
               <label htmlFor="showPassword">Hiển thị mật khẩu</label>

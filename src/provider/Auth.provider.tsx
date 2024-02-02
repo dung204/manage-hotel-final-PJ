@@ -8,11 +8,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const router = useRouter();
 
-  useLayoutEffect(() => {
-    // isAuthenticated
-    //   ? router.push(BASE_ROUTE.HOME)
-    //   : router.push(BASE_ROUTE.LOGIN);
-  }, [isAuthenticated, router]);
+  // useLayoutEffect(() => {
+  //   isAuthenticated
+  //     ? router.push(BASE_ROUTE.HOME)
+  //     : router.push(BASE_ROUTE.LOGIN);
+  // }, [isAuthenticated, router]);
 
   return <>{children}</>;
 };

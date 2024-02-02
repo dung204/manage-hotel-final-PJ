@@ -3,13 +3,13 @@ import {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
-} from 'axios';
-import axios from 'axios';
-import localStorageService from './localStorage.service';
-import StoreKeys from '@/common/constants/storekeys';
-import HttpStatusCode from '@/common/constants/httpStatusCode';
-import axiosConfig from '@/common/configs/api.config';
-import _omitBy from 'lodash/omitBy';
+} from "axios";
+import axios from "axios";
+import localStorageService from "./localStorage.service";
+import StoreKeys from "@/common/constants/storekeys";
+import HttpStatusCode from "@/common/constants/httpStatusCode";
+import axiosConfig from "@/common/configs/api.config";
+import _omitBy from "lodash/omitBy";
 
 /** @class */
 export default class HttpService {
@@ -17,7 +17,6 @@ export default class HttpService {
 
   constructor(config = axiosConfig) {
     const axiosConfigs = config;
-    console.log('axiosConfigs:', axiosConfigs);
 
     const instance = axios.create({ ...axiosConfigs });
     Object.assign(instance, this.setupInterceptorsTo(instance));
@@ -27,11 +26,11 @@ export default class HttpService {
   private async onRefreshToken() {
     const { refresh_token }: IAuthToken = localStorageService.get(
       StoreKeys.ACCESS_TOKEN,
-      ''
+      "",
     );
     if (refresh_token) {
       // TODO: handle refresh token
-      return '';
+      return "";
     }
   }
 
@@ -45,7 +44,7 @@ export default class HttpService {
   };
 
   private onResponse = (response: AxiosResponse) => {
-    return response.data;
+    return response;
   };
 
   private onResponseError = (error: AxiosError): Promise<AxiosError> => {
@@ -53,10 +52,10 @@ export default class HttpService {
     switch (statusCode) {
       case HttpStatusCode.UNAUTHORIZED: {
         if (
-          typeof window !== 'undefined' &&
-          !window.location.pathname.startsWith('/auth')
+          typeof window !== "undefined" &&
+          !window.location.pathname.startsWith("/auth")
         )
-          window.location.replace('/auth/sign-in');
+          window.location.replace("/auth/sign-in");
         break;
       }
     }
@@ -68,7 +67,7 @@ export default class HttpService {
     axiosInstance.interceptors.request.use(this.onRequest, this.onRequestError);
     axiosInstance.interceptors.response.use(
       this.onResponse,
-      this.onResponseError
+      this.onResponseError,
     );
     return axiosInstance;
   }
@@ -100,7 +99,7 @@ export default class HttpService {
 
     this.instance.defaults = {
       ...this.instance.defaults,
-      ..._omitBy(config, 'BaseURL'),
+      ..._omitBy(config, "BaseURL"),
     };
   }
 }
