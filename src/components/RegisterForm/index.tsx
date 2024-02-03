@@ -81,7 +81,7 @@ const RegisterForm = () => {
                   type="text"
                   name="email"
                   id="email"
-                  placeholder="email"
+                  placeholder="Email"
                 />
               </div>
               {errors.email && touched.email ? (
@@ -95,7 +95,7 @@ const RegisterForm = () => {
                   type="text"
                   name="username"
                   id="username"
-                  placeholder="username"
+                  placeholder="Username"
                 />
               </div>
               {errors.username && touched.username ? (
