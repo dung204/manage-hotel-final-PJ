@@ -4,7 +4,7 @@ const HeaderStyle = styled.header`
   .hide{
     display: none !important;
   }
-  background: var(--blue-color);
+  background: #003c71;
   color: var(--white-color);
   .header__wrapper {
     position: relative;
