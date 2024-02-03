@@ -4,9 +4,11 @@ import React, { PropsWithChildren } from "react";
 
 const MainLayout = ({ children }: PropsWithChildren) => {
   return (
-    <div>
+    <div className="d-flex flex-column h-100">
       <Header />
-      {children}
+      <div style={{minHeight: "100vh"}}>
+        {children}
+      </div>
       <Footer />
     </div>
   );
