@@ -24,6 +24,7 @@ const LoginPage = () => {
                 alt=""
                 effect="blur"
                 wrapperClassName="imgWrapper"
+                property=""
               />
             </div>
             <div className="col-6">
