@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react";
 import { ToastContainer, ToastContainerProps } from "react-toastify";
 import AuthProvider from "@/provider/Auth.provider";
 import "@/common/styles/reset.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const roboto = Roboto({
