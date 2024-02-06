@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikHelpers } from "formik";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -26,13 +26,21 @@ const initLoginFormValue: ILoginForm = {
 const LoginForm = () => {
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
+  const handleSubmitLogin = async (
+    value: ILoginForm,
+    formikHelpers: FormikHelpers<ILoginForm>,
+  ) => {
+    const response = await userApi.checkLogin(value);
+    console.log("🚀 ~ LoginForm ~ response:", response);
+
+    formikHelpers.resetForm();
+  };
+
   return (
     <Formik
       initialValues={initLoginFormValue}
       validationSchema={LoginFormSchema}
-      onSubmit={(value: ILoginForm) => {
-        toast.success("Đăng nhập thành công");
-      }}
+      onSubmit={handleSubmitLogin}
     >
       {({ errors, touched }) => {
         return (

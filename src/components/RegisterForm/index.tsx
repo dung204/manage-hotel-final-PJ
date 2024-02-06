@@ -55,6 +55,7 @@ const RegisterForm = () => {
         username: value.username,
         password: value.password,
       });
+      console.log("🚀 ~ RegisterForm ~ response:", response)
 
       if (response.data.isSuccess) {
         toast.success(response.data.message);
@@ -81,7 +82,7 @@ const RegisterForm = () => {
                   type="text"
                   name="email"
                   id="email"
-                  placeholder="email"
+                  placeholder="Email"
                 />
               </div>
               {errors.email && touched.email ? (
@@ -95,7 +96,7 @@ const RegisterForm = () => {
                   type="text"
                   name="username"
                   id="username"
-                  placeholder="username"
+                  placeholder="Username"
                 />
               </div>
               {errors.username && touched.username ? (

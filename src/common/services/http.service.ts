@@ -10,6 +10,7 @@ import StoreKeys from "@/common/constants/storekeys";
 import HttpStatusCode from "@/common/constants/httpStatusCode";
 import axiosConfig from "@/common/configs/api.config";
 import _omitBy from "lodash/omitBy";
+import { User } from "@/features/user/user.types";
 
 /** @class */
 export default class HttpService {
@@ -43,7 +44,18 @@ export default class HttpService {
     return Promise.reject(error);
   };
 
-  private onResponse = (response: AxiosResponse) => {
+  private onResponse = (
+    response: AxiosResponse<{
+      user: User;
+      access_token: string;
+      message: string;
+      isSuccess: boolean;
+    }>,
+  ) => {
+    // set token
+    if (response.data.access_token) {
+      localStorageService.set(StoreKeys.ACCESS_TOKEN, response.data.access_token);
+    }
     return response;
   };
 
@@ -53,9 +65,9 @@ export default class HttpService {
       case HttpStatusCode.UNAUTHORIZED: {
         if (
           typeof window !== "undefined" &&
-          !window.location.pathname.startsWith("/auth")
+          !window.location.pathname.startsWith("/login")
         )
-          window.location.replace("/auth/sign-in");
+          window.location.replace("/login");
         break;
       }
     }

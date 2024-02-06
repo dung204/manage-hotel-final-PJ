@@ -25,6 +25,9 @@ class UserApiService extends HttpService {
       data?: User;
     }>("/user/create", user);
   }
+  checkLogin(user: Pick<User, "username" | "password">) {
+    return this.post<User>("/user",user);
+  }
 }
 
 const userApi = new UserApiService();
