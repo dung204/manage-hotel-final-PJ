@@ -22,11 +22,11 @@ export const Header = () => {
   const [imageURL, setImageURL] = useState("https://res.ivivu.com/hotel/img/avatars/avatar-default-white.svg")
   const [isDropdown, setIsDropdown] = useState(false)
 
-  useEffect(() => {
-    const setCloseDropDown = () => {
-      setIsDropdown(false)
-    }
+  const setCloseDropDown = () => {
+    setIsDropdown(false)
+  }
 
+  useEffect(() => {
     window.addEventListener("click", setCloseDropDown)
 
     return () => {
@@ -47,7 +47,7 @@ export const Header = () => {
             <ul className="header__nav__list">
               {navItems.map((navItem, index) => {
                 return (
-                <li key={index}><Link className="nav__item" href={navItem.link}>{navItem.name}</Link></li>
+                <li key={navItem.name}><Link className="nav__item" href={navItem.link}>{navItem.name}</Link></li>
                 )
               })}
             </ul>
