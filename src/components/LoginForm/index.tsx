@@ -1,10 +1,10 @@
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import React, { useEffect } from "react";
-import { toast } from "react-toastify";
+import React from "react";
 import * as Yup from "yup";
 import Button from "../Button";
-import useGetUser from "@/features/user/useGetUser";
 import userApi from "@/features/user/user.service";
+import { toast } from "react-toastify";
+import { redirect, useRouter } from "next/navigation";
 
 export interface ILoginForm {
   username: string;
@@ -14,7 +14,7 @@ export interface ILoginForm {
 const LoginFormSchema = Yup.object().shape<
   Record<keyof ILoginForm, Yup.AnySchema>
 >({
-  username: Yup.string().required("Vui lòng nhập tên đăng nhập!"),
+  username: Yup.string().trim().required("Vui lòng nhập tên đăng nhập!"),
   password: Yup.string().required("Vui lòng nhập mật khẩu!"),
 });
 
@@ -26,14 +26,22 @@ const initLoginFormValue: ILoginForm = {
 const LoginForm = () => {
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
+  const router = useRouter();
+
   const handleSubmitLogin = async (
     value: ILoginForm,
     formikHelpers: FormikHelpers<ILoginForm>,
   ) => {
-    const response = await userApi.checkLogin(value);
-    console.log("🚀 ~ LoginForm ~ response:", response);
+    try {
+      const response = await userApi.checkLogin(value);
+      console.log("🚀 ~ LoginForm ~ response:", response.data)
 
-    formikHelpers.resetForm();
+      if (response.data.user) router.push("/");
+      else toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Có lỗi xảy ra!");
+    }
   };
 
   return (

@@ -36,6 +36,8 @@ export default class HttpService {
   }
 
   private onRequest = async (config: AxiosRequestConfig) => {
+    // get token and set to request
+    
     return config;
   };
 
@@ -49,7 +51,6 @@ export default class HttpService {
       user: User;
       access_token: string;
       message: string;
-      isSuccess: boolean;
     }>,
   ) => {
     // set token
