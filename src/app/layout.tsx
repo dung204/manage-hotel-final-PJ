@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { PropsWithChildren } from "react";
 import { ToastContainer, ToastContainerProps } from "react-toastify";
-import AuthProvider from "@/provider/Auth.provider";
+import ReduxProvider from "@/provider/ReduxProvider";
 import "@/common/styles/reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,10 +39,10 @@ export default function RootLayout({ children }: IRootLayoutpProps) {
     <html lang="en" className={roboto.className}>
       <body>
         <Providers>
-          <AuthProvider>
+          <ReduxProvider>
             <ToastContainer {...toastConfig} />
             {children}
-          </AuthProvider>
+          </ReduxProvider>
         </Providers>
       </body>
     </html>

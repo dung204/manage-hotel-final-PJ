@@ -1,10 +1,11 @@
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 import Button from "../Button";
-import userApi from "@/features/user/user.service";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/common/lib/hooks";
+import { loginThunk } from "@/common/lib/features/auth/authSlide";
 
 export interface ILoginForm {
   username: string;
@@ -27,17 +28,19 @@ const LoginForm = () => {
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (auth.isAuth) router.push("/");
+  }, [auth]);
 
   const handleSubmitLogin = async (
     value: ILoginForm,
     formikHelpers: FormikHelpers<ILoginForm>,
   ) => {
     try {
-      const response = await userApi.checkLogin(value);
-      console.log("🚀 ~ LoginForm ~ response:", response.data)
-
-      if (response.data.user) router.push("/");
-      else toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
+      dispatch(loginThunk(value));
     } catch (error) {
       console.log(error);
       toast.error("Có lỗi xảy ra!");

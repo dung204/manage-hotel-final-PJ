@@ -2,7 +2,7 @@
 import HttpService from "@/common/services/http.service";
 import { User } from "./user.types";
 
-interface UserResponse<T> {
+export interface UserResponse<T> {
   message: string;
   error?: string;
   user?: T;

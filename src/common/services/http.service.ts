@@ -37,7 +37,6 @@ export default class HttpService {
 
   private onRequest = async (config: AxiosRequestConfig) => {
     // get token and set to request
-    
     return config;
   };
 
