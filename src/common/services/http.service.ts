@@ -54,7 +54,10 @@ export default class HttpService {
   ) => {
     // set token
     if (response.data.access_token) {
-      localStorageService.set(StoreKeys.ACCESS_TOKEN, response.data.access_token);
+      localStorageService.set(
+        StoreKeys.ACCESS_TOKEN,
+        response.data.access_token,
+      );
     }
     return response;
   };

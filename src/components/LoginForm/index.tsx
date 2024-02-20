@@ -44,6 +44,7 @@ const LoginForm = () => {
     } catch (error) {
       console.log(error);
       toast.error("Có lỗi xảy ra!");
+      formikHelpers.resetForm();
     }
   };
 
