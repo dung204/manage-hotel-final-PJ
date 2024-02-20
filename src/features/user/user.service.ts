@@ -2,6 +2,12 @@
 import HttpService from "@/common/services/http.service";
 import { User } from "./user.types";
 
+export interface UserResponse<T> {
+  message: string;
+  error?: string;
+  user?: T;
+}
+
 class UserApiService extends HttpService {
   constructor() {
     super({
@@ -18,12 +24,10 @@ class UserApiService extends HttpService {
     return this.put<User>(`/user/${user._id}`, user);
   }
   createUser(user: Omit<User, "_id">) {
-    return this.post<{
-      isSuccess: boolean;
-      message: string;
-      error?: string;
-      data?: User;
-    }>("/user/create", user);
+    return this.post<UserResponse<User>>("/user/create", user);
+  }
+  checkLogin(user: Pick<User, "username" | "password">) {
+    return this.post<UserResponse<User>>("/user", user);
   }
 }
 

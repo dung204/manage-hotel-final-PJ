@@ -1,8 +1,11 @@
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import React from "react";
-import { toast } from "react-toastify";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 import Button from "../Button";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/common/lib/hooks";
+import { loginThunk } from "@/common/lib/features/auth/authSlide";
 
 export interface ILoginForm {
   username: string;
@@ -12,7 +15,7 @@ export interface ILoginForm {
 const LoginFormSchema = Yup.object().shape<
   Record<keyof ILoginForm, Yup.AnySchema>
 >({
-  username: Yup.string().required("Vui lòng nhập tên đăng nhập!"),
+  username: Yup.string().trim().required("Vui lòng nhập tên đăng nhập!"),
   password: Yup.string().required("Vui lòng nhập mật khẩu!"),
 });
 
@@ -24,18 +27,32 @@ const initLoginFormValue: ILoginForm = {
 const LoginForm = () => {
   const [isPasswordShow, setIsPasswordShow] = React.useState(false);
 
-  const handleSubmitForm = (
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (auth.isAuth) router.push("/");
+  }, [auth]);
+
+  const handleSubmitLogin = async (
     value: ILoginForm,
     formikHelpers: FormikHelpers<ILoginForm>,
   ) => {
-    formikHelpers.resetForm();
+    try {
+      dispatch(loginThunk(value));
+    } catch (error) {
+      console.log(error);
+      toast.error("Có lỗi xảy ra!");
+      formikHelpers.resetForm();
+    }
   };
 
   return (
     <Formik
       initialValues={initLoginFormValue}
       validationSchema={LoginFormSchema}
-      onSubmit={handleSubmitForm}
+      onSubmit={handleSubmitLogin}
     >
       {({ errors, touched }) => {
         return (

@@ -16,18 +16,25 @@ const RegisterFormSchema = Yup.object().shape<
   Record<keyof IRegisterForm, Yup.AnySchema>
 >({
   username: Yup.string()
+    .trim()
     .required("Vui lòng nhập tên đăng nhập!")
     .min(6, "Tên người dùng từ 6 đến 20 kí tự!")
-    .max(20, "Tên người dùng từ 6 đến 20 kí tự!"),
+    .max(20, "Tên người dùng từ 6 đến 20 kí tự!")
+    .matches(/^\S*$/, "Tên người dùng không được chứa khoảng trắng!"),
   password: Yup.string()
+    .trim()
     .required("Vui lòng nhập mật khẩu!")
     .min(6, "Mật khẩu từ 6 đến 20 kí tự!")
-    .max(20, "Mật khẩu từ 6 đến 20 kí tự!"),
+    .max(20, "Mật khẩu từ 6 đến 20 kí tự!")
+    .matches(/^\S*$/, "Mật khẩu dùng không được chứa khoảng trắng!"),
   confirmPassword: Yup.string()
+    .trim()
     .required("Vui lòng nhập lại mật khẩu!")
     .min(6, "Mật khẩu từ 6 đến 20 kí tự!")
-    .max(20, "Mật khẩu từ 6 đến 20 kí tự!"),
+    .max(20, "Mật khẩu từ 6 đến 20 kí tự!")
+    .matches(/^\S*$/, "Mật khẩu dùng không được chứa khoảng trắng!"),
   email: Yup.string()
+    .trim()
     .email("Email không hợp lệ!")
     .required("Vui lòng nhập email!"),
 });
@@ -55,11 +62,14 @@ const RegisterForm = () => {
         username: value.username,
         password: value.password,
       });
+      console.log("🚀 ~ RegisterForm ~ response:", response.data);
 
-      if (response.data.isSuccess) {
+      if (response.data.user) {
         toast.success(response.data.message);
         formikHelpers.resetForm();
-      } else toast.error(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
     } catch (error) {
       toast.error("Có lỗi xảy ra! Vui lòng thử lại!");
     }
