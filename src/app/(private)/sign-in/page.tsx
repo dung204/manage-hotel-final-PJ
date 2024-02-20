@@ -22,7 +22,6 @@ const LoginPage = () => {
               <LazyLoadImage
                 src="/loginBackground.jpg"
                 alt=""
-                effect="blur"
                 wrapperClassName="imgWrapper"
                 property=""
               />
